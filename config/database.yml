@@ -19,7 +19,7 @@ default: &default
 
 development:
   <<: *default
-  database: dev_dell
+  database: dell_dev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -50,5 +50,6 @@ test:
 production:
   <<: *default
   database: dell_production
-  username: dell
-  password: <%= ENV['DELL_DATABASE_PASSWORD'] %>
+  username: root
+#  password: <%= ENV['DELL_DATABASE_PASSWORD'] %>
+  password: password
