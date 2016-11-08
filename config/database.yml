@@ -14,7 +14,6 @@ development:
 test:
   <<: *default
   database: dell_test
-bahahaha
 
 production:
   <<: *default
