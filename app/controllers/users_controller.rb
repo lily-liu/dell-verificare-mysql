@@ -72,5 +72,4 @@ class UsersController < ApplicationController
     user_data =[:name, :nrp, :rank].map { |key| params.fetch(key, {}) }
   end
 
-  # match token from FUCKING PLAINTEXT PASSWORD STORED ON DB using sha1
 end
