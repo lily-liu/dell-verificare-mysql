@@ -10,7 +10,7 @@ default: &default
 development:
   <<: *default
   database: satuforce
-sdkjcnjskdnckjkjkj
+  
 test:
   <<: *default
   database: dell_test
