@@ -1,6 +1,6 @@
 class AbsencesController < ApplicationController
   before_action :set_absence, only: [:show]
-  before_action :auth_token
+  # before_action :auth_token
 
   # GET /absences
   # GET /absences.json
