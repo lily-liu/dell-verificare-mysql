@@ -46,7 +46,7 @@ class UsersController < ApplicationController
   def login
 
     if @user = User.find(params[:Username])
-      if @user.Password != params[:password]
+      if @user.Password != params[:Password]
         @message = "password missmatch"
         render :error
       else
@@ -69,7 +69,29 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    user_data =[:name, :nrp, :rank].map { |key| params.fetch(key, {}) }
+    user_data = {
+        Username: params.fetch(:Username,{}),
+        Password: params.fetch(:Password,{}),
+        Level: params.fetch(:Level,{}),
+        Position: params.fetch(:Position,{}),
+        Name: params.fetch(:Name,{}),
+        Gender: params.fetch(:Gender,{}),
+        Birthplace: params.fetch(:Birthplace,{}),
+        Birthday: params.fetch(:Birthday,{}),
+        Email: params.fetch(:Email,{}),
+        Phone: params.fetch(:Phone,{}),
+        PINBB: params.fetch(:PINBB,{}),
+        Address: params.fetch(:Address,{}),
+        City: params.fetch(:City,{}),
+        RTeamLeader: params.fetch(:RTeamLeader,{}),
+        RDistributor: params.fetch(:RDistributor,{}),
+        RCity: params.fetch(:RCity,{}),
+        RFilter: params.fetch(:RFilter,{}),
+        RShow: params.fetch(:RShow,{}),
+        Rstart: params.fetch(:Rstart,{}),
+        REnd: params.fetch(:REnd,{}),
+        Timestamp: params.fetch(:Timestamp,{})
+    }
   end
 
 end
