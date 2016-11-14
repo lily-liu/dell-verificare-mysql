@@ -1,6 +1,6 @@
 class AbsencesController < ApplicationController
   before_action :set_absence, only: [:show]
-  # before_action :auth_token
+  before_action :auth_token
 
   # GET /absences
   # GET /absences.json
@@ -60,9 +60,10 @@ class AbsencesController < ApplicationController
     @absence.Timestamp = Time.now.to_i
 
     if @absence.save
-      render :show, status: :created, location: @absence
+      render :show, status: :created
     else
-      render json: @absence.errors, status: :unprocessable_entity
+      @message = "cant save, error on sending"
+      render :error
     end
 
   end
