@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   post "absences", to:"absences#create"
   # resources :absences
 
-  post "test", to:"sellouts#asd"
+  post "upload/proof", to:"sellouts#upload_photo"
+  get "/test", to: "sellouts#asd"
 end

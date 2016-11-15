@@ -40,10 +40,14 @@ class SelloutsController < ApplicationController
     @sellout.destroy
   end
 
-  def asd
+  def upload_photo
     uploader = PhotoUploader.new
     uploader.setname(params[:st].to_s)
     uploader.store!(params[:proof])
+  end
+
+  def asd
+    render json: Sellin.find("7HJRCY1")
   end
 
   private

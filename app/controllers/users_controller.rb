@@ -51,7 +51,7 @@ class UsersController < ApplicationController
         render :error
       else
         @user.Password = Digest::SHA1.hexdigest(@user.Password)
-        render :show, status: :ok
+        render('users/show')
       end
     else
       @message = "no username"
