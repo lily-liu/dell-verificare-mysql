@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   # absence routes
   post "absences", to:"absences#create"
   # resources :absences
+
+  post "test", to:"sellouts#asd"
 end

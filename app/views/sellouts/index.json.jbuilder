@@ -1,0 +1,1 @@
+json.array! @sellouts, partial: 'sellouts/sellout', as: :sellout

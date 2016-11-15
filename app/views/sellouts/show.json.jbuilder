@@ -1,0 +1,1 @@
+json.partial! "sellouts/sellout", sellout: @sellout
