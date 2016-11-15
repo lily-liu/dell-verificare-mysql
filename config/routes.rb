@@ -5,14 +5,14 @@ Rails.application.routes.draw do
   post "users/login", to: "users#login", defaults:{format: :json}
 
   # user routes
-  get "users/:id", to: "users#show"
-  get "users", to: "users#index"
+  get "users/:id", to: "users#show", defaults:{format: :json}
+  get "users", to: "users#index", defaults:{format: :json}
   # resources :users
 
   # absence routes
-  post "absences", to:"absences#create"
+  post "absences", to:"absences#create", defaults:{format: :json}
   # resources :absences
 
-  post "upload/proof", to:"sellouts#upload_photo"
-  get "/test", to: "sellouts#asd"
+  post "upload/proof", to:"sellouts#upload_photo", defaults:{format: :json}
+  get "/test", to: "sellouts#asd", defaults:{format: :json}
 end
