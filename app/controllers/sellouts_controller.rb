@@ -16,32 +16,6 @@ class SelloutsController < ApplicationController
   # POST /sellouts
   # POST /sellouts.json
   def create
-    @sellout = Sellout.new(sellout_params)
-
-    if @sellout.save
-      render :show, status: :created, location: @sellout
-    else
-      render json: @sellout.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /sellouts/1
-  # PATCH/PUT /sellouts/1.json
-  def update
-    if @sellout.update(sellout_params)
-      render :show, status: :ok, location: @sellout
-    else
-      render json: @sellout.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /sellouts/1
-  # DELETE /sellouts/1.json
-  def destroy
-    @sellout.destroy
-  end
-
-  def asd
     sellin_data = Sellin.find(sellout_params[:ServiceTag].to_s)
     store_data = Store.find(params[:StoreID].to_s)
     photo_proof = params.fetch(:Proof, nil)
@@ -89,7 +63,26 @@ class SelloutsController < ApplicationController
       @message = "no sellin for the service tag"
       render :error, status: :bad_request
     end
-    # render json: sellin_data = Sellin.find(sellout_params[:ServiceTag].to_s)
+  end
+
+  # PATCH/PUT /sellouts/1
+  # PATCH/PUT /sellouts/1.json
+  def update
+    if @sellout.update(sellout_params)
+      render :show, status: :ok, location: @sellout
+    else
+      render json: @sellout.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /sellouts/1
+  # DELETE /sellouts/1.json
+  def destroy
+    @sellout.destroy
+  end
+
+  def asd
+
   end
 
   private

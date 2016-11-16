@@ -13,6 +13,6 @@ Rails.application.routes.draw do
   post "absences", to:"absences#create", defaults:{format: :json}
   # resources :absences
 
-  post "upload/proof", to:"sellouts#upload_photo", defaults:{format: :json}
-  post "/test", to: "sellouts#asd", defaults:{format: :json}
+  # sellout routes
+  post "sellouts/create", to: "sellouts#create", defaults:{format: :json}
 end
