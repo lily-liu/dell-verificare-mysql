@@ -18,18 +18,19 @@ class AbsencesController < ApplicationController
   def create
     # render json: Absence.where("Timestamp > ? AND Absence = ? AND Username = ?",1.day.ago.to_i,"In",params[:Username])
     user = User.find(params.fetch(:Username), nil)
-    existing_absence = Absence.where("Timestamp > ? AND Absence = ? AND Username = ? AND StoreID = ?", 12.hour.ago.to_i, "In", params[:Username].to_s, params.fetch(:StoreID))
+    existing_absence_in = Absence.where("Timestamp > ? AND Absence = ? AND Username = ? AND StoreID = ?", 12.hour.ago.to_i, "In", params[:Username].to_s, params.fetch(:StoreID))
+    existing_absence_out = Absence.where("Timestamp > ? AND Absence = ? AND Username = ? AND StoreID = ?", 12.hour.ago.to_i, "Out", params[:Username].to_s, params.fetch(:StoreID))
     if user.present? && params[:StoreID].present? && params[:StoreID] != nil
       case params.fetch(:Absence, "In")
         when "Out"
-          if existing_absence.present?
+          if existing_absence_in.present? && !existing_absence_out.present?
             save_absence(user, absence_params)
           else
-            @message = "cant absence out without absence in"
+            @message = "cant absence out without absence in or absence out multiple times"
             render :error, status: :unauthorized
           end
         when "In"
-          if !existing_absence.present?
+          if !existing_absence_in.present? && !existing_absence_out.present?
             save_absence(user, absence_params)
           else
             @message = "cant absence in same store multiple times"
