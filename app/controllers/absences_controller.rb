@@ -29,7 +29,7 @@ class AbsencesController < ApplicationController
             render :error, status: :unauthorized
           end
         when "In"
-          if existing_absence.present?
+          if !existing_absence.present?
             save_absence(user, absence_params)
           else
             @message = "cant absence in same store multiple times"
