@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   # resources :users
 
   # absence routes
-  post "absences", to:"absences#create", defaults:{format: :json}
+  post "absences/create", to:"absences#create", defaults:{format: :json}
   # resources :absences
 
   # sellout routes
