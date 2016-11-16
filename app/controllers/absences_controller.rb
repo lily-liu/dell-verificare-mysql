@@ -49,7 +49,7 @@ class AbsencesController < ApplicationController
         Latitude: params.fetch(:Latitude, 0),
         Longitude: params.fetch(:Longitude, 0),
         Remarks: params.fetch(:Remarks, ""),
-        StoreId: params.fetch(:StoreId, nil)
+        StoreID: params.fetch(:StoreID, nil)
     }
   end
 
