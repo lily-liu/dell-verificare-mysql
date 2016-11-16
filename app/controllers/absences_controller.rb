@@ -17,18 +17,25 @@ class AbsencesController < ApplicationController
   # POST /absences.json
   def create
     # render json: Absence.where("Timestamp > ? AND Absence = ? AND Username = ?",1.day.ago.to_i,"In",params[:Username])
-    user = User.find(params.fetch(:Username),nil)
+    user = User.find(params.fetch(:Username), nil)
     if user.present? && params[:StoreID].present? && params[:StoreID] != nil
-      case params.fetch(:Absence,"In")
+      case params.fetch(:Absence, "In")
         when "Out"
           if Absence.where("Timestamp > ? AND Absence = ? AND Username = ?", 1.day.ago.to_i, "In", params[:Username].to_s).present?
-            save_absence(user,absence_params)
+            save_absence(user, absence_params)
           else
             @message = "cant absence out without absence in"
             render :error, status: :unauthorized
           end
+        when "In"
+          if !Absence.where("Timestamp > ? AND Absence = ? AND Username = ? AND StoreID = ?", 1.day.ago.to_i, "In", params[:Username].to_s, params.fetch(:StoreID)).present?
+            save_absence(user, absence_params)
+          else
+            @message = "cant absence in same store multiple times"
+            render :error, status: :unauthorized
+          end
         else
-          save_absence(user,absence_params)
+          save_absence(user, absence_params)
       end
     else
       @message = "no username match in database"
@@ -53,7 +60,7 @@ class AbsencesController < ApplicationController
     }
   end
 
-  def save_absence(user,params)
+  def save_absence(user, params)
 
     @absence = Absence.new(params)
     @absence.Username = user.Username
