@@ -18,17 +18,18 @@ class AbsencesController < ApplicationController
   def create
     # render json: Absence.where("Timestamp > ? AND Absence = ? AND Username = ?",1.day.ago.to_i,"In",params[:Username])
     user = User.find(params.fetch(:Username), nil)
+    existing_absence = Absence.where("Timestamp > ? AND Absence = ? AND Username = ? AND StoreID = ?", 12.hour.ago.to_i, "In", params[:Username].to_s, params.fetch(:StoreID))
     if user.present? && params[:StoreID].present? && params[:StoreID] != nil
       case params.fetch(:Absence, "In")
         when "Out"
-          if Absence.where("Timestamp > ? AND Absence = ? AND Username = ?", 1.day.ago.to_i, "In", params[:Username].to_s).present?
+          if existing_absence.present?
             save_absence(user, absence_params)
           else
             @message = "cant absence out without absence in"
             render :error, status: :unauthorized
           end
         when "In"
-          if !Absence.where("Timestamp > ? AND Absence = ? AND Username = ? AND StoreID = ?", 1.day.ago.to_i, "In", params[:Username].to_s, params.fetch(:StoreID)).present?
+          if existing_absence.present?
             save_absence(user, absence_params)
           else
             @message = "cant absence in same store multiple times"
@@ -52,7 +53,7 @@ class AbsencesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def absence_params
     user_data = {
-        Absence: params.fetch(:Absence, {}),
+        Absence: params.fetch(:Absence, "In"),
         Latitude: params.fetch(:Latitude, 0),
         Longitude: params.fetch(:Longitude, 0),
         Remarks: params.fetch(:Remarks, ""),
