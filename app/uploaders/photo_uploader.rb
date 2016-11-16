@@ -52,7 +52,7 @@ class PhotoUploader < CarrierWave::Uploader::Base
   end
 
   def setname(name)
-    @new_filename = name + "_proof"
+    @new_filename = name
   end
 
 end
