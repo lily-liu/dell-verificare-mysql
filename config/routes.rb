@@ -16,4 +16,7 @@ Rails.application.routes.draw do
 
   # sellout routes
   post "sellouts/create", to: "sellouts#create", defaults:{format: :json}
+
+  # remarks route
+  post "remarks/create", to: "store_remarks#create", defaults:{format: :json}
 end

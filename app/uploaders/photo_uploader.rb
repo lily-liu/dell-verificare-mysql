@@ -13,10 +13,17 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # filename for storage
   @new_filename
 
+  # store directory for image
+  @storedir
+
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "img/proof"
+    if !@storedir.present? && @storedir == nil
+      "img/unknown"
+    else
+      @storedir
+    end
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -28,10 +35,10 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-
   process :resize_to_fit => [300, 300]
 
   # def scale(width, height)
+  #   # do something
   # end
 
   # Create different versions of your uploaded files:
@@ -51,8 +58,13 @@ class PhotoUploader < CarrierWave::Uploader::Base
     "#{@new_filename}.#{file.extension}"
   end
 
+  # setting new filename for storeage
   def setname(name)
     @new_filename = name
+  end
+
+  def setstore(path)
+    @storedir = path
   end
 
 end
