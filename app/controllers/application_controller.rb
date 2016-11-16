@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
     @user = User.find(params[:Username])
     if Digest::SHA1.hexdigest(@user.Password) != params[:Password]
       @message = "wrong token"
-      render :error
+      render :error, status: :unauthorized
     end
   end
 

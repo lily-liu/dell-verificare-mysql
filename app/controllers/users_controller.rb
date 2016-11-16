@@ -48,14 +48,14 @@ class UsersController < ApplicationController
     if @user = User.find(params[:Username])
       if @user.Password != params[:Password]
         @message = "password missmatch"
-        render :error
+        render :error, status: :unauthorized
       else
         @user.Password = Digest::SHA1.hexdigest(@user.Password)
         render :show, status: :ok
       end
     else
       @message = "no username"
-      render :error
+      render :error, status: :unauthorized
     end
 
   end

@@ -14,5 +14,5 @@ Rails.application.routes.draw do
   # resources :absences
 
   post "upload/proof", to:"sellouts#upload_photo", defaults:{format: :json}
-  get "/test", to: "sellouts#asd", defaults:{format: :json}
+  post "/test", to: "sellouts#asd", defaults:{format: :json}
 end

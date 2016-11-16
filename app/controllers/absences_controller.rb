@@ -21,18 +21,18 @@ class AbsencesController < ApplicationController
     if user.present?
       case params[:Absence]
         when "Out"
-          if Absence.where("Timestamp > ? AND Absence = ? AND Username = ?", 1.day.ago.to_i, "In", params[:Username]).present?
+          if Absence.where("Timestamp > ? AND Absence = ? AND Username = ?", 1.day.ago.to_i, "In", params[:Username].to_s).present?
             save_absence(user,absence_params)
           else
             @message = "cant absence out without absence in"
-            render :error
+            render :error, status: :unauthorized
           end
         else
           save_absence(user,absence_params)
       end
     else
       @message = "no username match in database"
-      render :error
+      render :error, status: :not_found
     end
   end
 
@@ -48,7 +48,8 @@ class AbsencesController < ApplicationController
         Absence: params.fetch(:Absence, {}),
         Latitude: params.fetch(:Latitude, {}),
         Longitude: params.fetch(:Longitude, {}),
-        Remarks: params.fetch(:Remarks, {})
+        Remarks: params.fetch(:Remarks, {}),
+        StoreId: params.fetch(:StoreId, {})
     }
   end
 
@@ -56,14 +57,13 @@ class AbsencesController < ApplicationController
 
     @absence = Absence.new(params)
     @absence.Username = user.Username
-    @absence.StoreID = user.StoreID
     @absence.Timestamp = Time.now.to_i
 
     if @absence.save
       render :show, status: :created
     else
       @message = "cant save, error on sending"
-      render :error
+      render :error, status: :unprocessable_entity
     end
 
   end
