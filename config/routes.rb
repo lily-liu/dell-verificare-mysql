@@ -19,4 +19,7 @@ Rails.application.routes.draw do
 
   # remarks route
   post "remarks/create", to: "store_remarks#create", defaults:{format: :json}
+
+  # issues route
+  post "issues/create", to: "issues#create", defaults:{format: :json}
 end

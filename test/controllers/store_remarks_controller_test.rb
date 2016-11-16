@@ -2,7 +2,7 @@ require 'test_helper'
 
 class StoreRemarksControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @store_remark = store_remarks(:one)
+    @issue = store_remarks(:one)
   end
 
   test "should get index" do
@@ -19,12 +19,12 @@ class StoreRemarksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show store_remark" do
-    get store_remark_url(@store_remark), as: :json
+    get store_remark_url(@issue), as: :json
     assert_response :success
   end
 
   test "should update store_remark" do
-    patch store_remark_url(@store_remark), params: { store_remark: {  } }, as: :json
+    patch store_remark_url(@issue), params: {issue: {  } }, as: :json
     assert_response 200
   end
 

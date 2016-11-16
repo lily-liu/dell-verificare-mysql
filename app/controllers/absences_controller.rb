@@ -18,7 +18,7 @@ class AbsencesController < ApplicationController
   def create
     # render json: Absence.where("Timestamp > ? AND Absence = ? AND Username = ?",1.day.ago.to_i,"In",params[:Username])
     user = User.find(params.fetch(:Username),nil)
-    if user.present?
+    if user.present? && params[:StoreID].present? && params[:StoreID] != nil
       case params.fetch(:Absence,"In")
         when "Out"
           if Absence.where("Timestamp > ? AND Absence = ? AND Username = ?", 1.day.ago.to_i, "In", params[:Username].to_s).present?
@@ -46,10 +46,10 @@ class AbsencesController < ApplicationController
   def absence_params
     user_data = {
         Absence: params.fetch(:Absence, {}),
-        Latitude: params.fetch(:Latitude, {}),
-        Longitude: params.fetch(:Longitude, {}),
-        Remarks: params.fetch(:Remarks, {}),
-        StoreId: params.fetch(:StoreId, {})
+        Latitude: params.fetch(:Latitude, 0),
+        Longitude: params.fetch(:Longitude, 0),
+        Remarks: params.fetch(:Remarks, ""),
+        StoreId: params.fetch(:StoreId, nil)
     }
   end
 

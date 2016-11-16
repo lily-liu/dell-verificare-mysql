@@ -17,21 +17,21 @@ class StoreRemarksController < ApplicationController
   # POST /store_remarks.json
   def create
     remark_photo = params.fetch(:Photo, nil)
-    if params[:Photo] != nil
-      @store_remark = StoreRemark.new(store_remark_params)
-      @store_remark.Timestamp = Time.now.to_i
+    if remark_photo != nil && params[:Remarks].present?
+      @issue = StoreRemark.new(store_remark_params)
+      @issue.Timestamp = Time.now.to_i
       if @store_remark.save
-        if upload_photo(remark_photo,@store_remark.ID.to_s)
+        if upload_photo(remark_photo, @issue.ID.to_s)
           render :show, status: :created
         else
           @message = "remark unprocessable"
           render :error, status: :unprocessable_entity
         end
       else
-        render json: @store_remark.errors, status: :unprocessable_entity
+        render json: @issue.errors, status: :unprocessable_entity
       end
     else
-      @message = "no photo for remark"
+      @message = "missing photo or remarks"
       render :error, status: :bad_request
     end
   end
@@ -39,7 +39,7 @@ class StoreRemarksController < ApplicationController
   # PATCH/PUT /store_remarks/1
   # PATCH/PUT /store_remarks/1.json
   def update
-    if @store_remark.update(store_remark_params)
+    if @issue.update(store_remark_params)
       render :show, status: :ok, location: @store_remark
     else
       render json: @store_remark.errors, status: :unprocessable_entity
@@ -49,7 +49,7 @@ class StoreRemarksController < ApplicationController
   # DELETE /store_remarks/1
   # DELETE /store_remarks/1.json
   def destroy
-    @store_remark.destroy
+    @issue.destroy
   end
 
   private
@@ -61,7 +61,7 @@ class StoreRemarksController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def store_remark_params
     user_data = {
-        Remarks: params.fetch(:Remarks, {}),
+        Remarks: params.fetch(:Remarks, nil),
         StoreID: params.fetch(:StoreID, ""),
         Username: params.fetch(:Username, "")
     }
