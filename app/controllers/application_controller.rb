@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::API
-  def to_envelope(status,message,data)
-    render json: {status:status,message:message,data:data}
-  end
+  # def to_envelope(status,message,data)
+  #   render json: {status:status,message:message,data:data}
+  # end
 
-  # match token from FUCKING PLAINTEXT PASSWORD STORED ON DB using sha1
+  # match token from token table
   def auth_token
-    @user = User.find(params[:Username])
-    if Digest::SHA1.hexdigest(@user.Password) != params[:Password]
+    token_match = Token.where("ID = ? AND Username = ?",params.fetch(:Token,nil),params.fetch(:Username,nil))
+    if !token_match.present?
       @message = "wrong token"
       render :error, status: :unauthorized
     end

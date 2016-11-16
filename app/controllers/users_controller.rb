@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :auth_token, except: [:login,:show]
+  before_action :auth_token, except: [:login, :show]
 
   # GET /users
   # GET /users.json
@@ -44,14 +44,18 @@ class UsersController < ApplicationController
   end
 
   def login
-
-    if @user = User.find(params[:Username])
-      if @user.Password != params[:Password]
+    @user = User.find(params.fetch(:Username, nil))
+    if @user.present?
+      if @user.Password != params.fetch(:Password, nil)
         @message = "password missmatch"
         render :error, status: :unauthorized
       else
-        @user.Password = Digest::SHA1.hexdigest(@user.Password)
-        render :show, status: :ok
+        token = Token.new({ID: Digest::MD5.hexdigest(SecureRandom.uuid), Username: @user.Username, Timestamp: Time.now.to_i})
+        if token.save
+          @data = {Username: @user.Username, Level: @user.Level, Name: @user.Name, Token: token.ID}
+          render :login, status: :ok
+        end
+        # @user.Password = Digest::SHA1.hexdigest(@user.Password)
       end
     else
       @message = "no username"
@@ -70,27 +74,27 @@ class UsersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     user_data = {
-        Username: params.fetch(:Username,{}),
-        Password: params.fetch(:Password,{}),
-        Level: params.fetch(:Level,{}),
-        Position: params.fetch(:Position,{}),
-        Name: params.fetch(:Name,{}),
-        Gender: params.fetch(:Gender,{}),
-        Birthplace: params.fetch(:Birthplace,{}),
-        Birthday: params.fetch(:Birthday,{}),
-        Email: params.fetch(:Email,{}),
-        Phone: params.fetch(:Phone,{}),
-        PINBB: params.fetch(:PINBB,{}),
-        Address: params.fetch(:Address,{}),
-        City: params.fetch(:City,{}),
-        RTeamLeader: params.fetch(:RTeamLeader,{}),
-        RDistributor: params.fetch(:RDistributor,{}),
-        RCity: params.fetch(:RCity,{}),
-        RFilter: params.fetch(:RFilter,{}),
-        RShow: params.fetch(:RShow,{}),
-        Rstart: params.fetch(:Rstart,{}),
-        REnd: params.fetch(:REnd,{}),
-        Timestamp: params.fetch(:Timestamp,{})
+        Username: params.fetch(:Username, {}),
+        Password: params.fetch(:Password, {}),
+        Level: params.fetch(:Level, {}),
+        Position: params.fetch(:Position, {}),
+        Name: params.fetch(:Name, {}),
+        Gender: params.fetch(:Gender, {}),
+        Birthplace: params.fetch(:Birthplace, {}),
+        Birthday: params.fetch(:Birthday, {}),
+        Email: params.fetch(:Email, {}),
+        Phone: params.fetch(:Phone, {}),
+        PINBB: params.fetch(:PINBB, {}),
+        Address: params.fetch(:Address, {}),
+        City: params.fetch(:City, {}),
+        RTeamLeader: params.fetch(:RTeamLeader, {}),
+        RDistributor: params.fetch(:RDistributor, {}),
+        RCity: params.fetch(:RCity, {}),
+        RFilter: params.fetch(:RFilter, {}),
+        RShow: params.fetch(:RShow, {}),
+        Rstart: params.fetch(:Rstart, {}),
+        REnd: params.fetch(:REnd, {}),
+        Timestamp: params.fetch(:Timestamp, {})
     }
   end
 

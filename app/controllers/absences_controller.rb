@@ -17,9 +17,9 @@ class AbsencesController < ApplicationController
   # POST /absences.json
   def create
     # render json: Absence.where("Timestamp > ? AND Absence = ? AND Username = ?",1.day.ago.to_i,"In",params[:Username])
-    user = User.find(params[:Username])
+    user = User.find(params.fetch(:Username),nil)
     if user.present?
-      case params[:Absence]
+      case params.fetch(:Absence,"In")
         when "Out"
           if Absence.where("Timestamp > ? AND Absence = ? AND Username = ?", 1.day.ago.to_i, "In", params[:Username].to_s).present?
             save_absence(user,absence_params)
