@@ -1,5 +1,6 @@
 class SelloutsController < ApplicationController
-  before_action :set_sellout, only: [:show, :update, :destroy]
+  before_action :set_sellout, only: [:show, :update]
+  before_action :auth_token
 
 
   # GET /sellouts
@@ -28,7 +29,6 @@ class SelloutsController < ApplicationController
 
         @sellout.DistributorID = sellin_data.DistributorID
         @sellout.StoreID = store_data.ID
-        @sellout.MasterDealerID = ""
         store_data.ChannelManager.present? ? @sellout.ChannelManager = store_data.ChannelManager : @sellout.ChannelManager = ""
         store_data.TeamLeader.present? ? @sellout.TeamLeader = store_data.TeamLeader : @sellout.TeamLeader = ""
         store_data.Promoter.present? ? @sellout.Promoter = store_data.Promoter : @sellout.Promoter = ""
@@ -40,10 +40,6 @@ class SelloutsController < ApplicationController
         @sellout.Year = sales_time.year
         @sellout.Month = sales_time.month
         @sellout.Day = sales_time.day
-        @sellout.Other2 = ""
-        @sellout.Other3 = ""
-        @sellout.Other4 = ""
-        @sellout.Other5 = ""
         if upload_photo(photo_proof,sellout_params[:ServiceTag])
           if @sellout.save
             render :show, status: :created
@@ -97,7 +93,12 @@ class SelloutsController < ApplicationController
         ServiceTag: params.fetch(:ServiceTag, {}),
         PriceIDR: params.fetch(:PriceIDR, 0),
         PriceUSD: params.fetch(:PriceUSD, 0),
-        Other1: params.fetch(:Remark, "")
+        MasterDealerID: params.fetch(:MasterDealerID, ""),
+        Other1: params.fetch(:Remark, ""),
+        Other2: params.fetch(:Other2, ""),
+        Other3: params.fetch(:Other3, ""),
+        Other4: params.fetch(:Other4, ""),
+        Other5: params.fetch(:Other5, "")
     }
   end
 
@@ -121,9 +122,11 @@ class SelloutsController < ApplicationController
     ((((date.to_i - 7171200)/86400) / 7).round % 13) + 1
   end
 
+  # save photo for uploading
   def upload_photo(proof_image, filename)
     uploader = PhotoUploader.new
     uploader.setname(filename)
+    uploader.setstore("img/proof")
     uploader.store!(proof_image)
   end
 
