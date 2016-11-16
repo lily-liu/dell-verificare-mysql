@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :auth_token, except: [:login, :show]
+  before_action :auth_token, except: [:login]
 
   # GET /users
   # GET /users.json
@@ -61,7 +61,17 @@ class UsersController < ApplicationController
       @message = "no username"
       render :error, status: :unauthorized
     end
+  end
 
+  def logout
+    token_match = Token.where("ID = ? AND Username = ?",params.fetch(:Token,nil),params.fetch(:Username,nil)).first
+    if token_match.present?
+      token_match.destroy()
+      render
+    else
+      @message = "you are not logged in"
+      render :error, status: :unauthorized
+    end
   end
 
 

@@ -5,9 +5,9 @@ class ApplicationController < ActionController::API
 
   # match token from token table
   def auth_token
-    token_match = Token.where("ID = ? AND Username = ?",params.fetch(:Token,nil),params.fetch(:Username,nil))
+    token_match = Token.where("ID = ? AND Username = ?",params.fetch(:Token,nil),params.fetch(:Username,nil)).first
     if !token_match.present?
-      @message = "wrong token"
+      @message = "wrong token or username supplied"
       render :error, status: :unauthorized
     end
   end
