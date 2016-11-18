@@ -21,6 +21,4 @@ Things you may want to cover:
 
 * Buhahahaha
 
-* Deployment instructions
-
 * This is Aji Pratama commit ignoring database.yml
